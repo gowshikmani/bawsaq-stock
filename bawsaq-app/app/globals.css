@@ -96,6 +96,8 @@ ul {
 ========================================= */
 
 .bawsaq-app {
+  --sidebar-width: 220px;
+
   min-height: 100vh;
   display: flex;
   background:
@@ -110,15 +112,15 @@ ul {
 .main-area {
   flex: 1;
   min-width: 0;
-  margin-left: 220px;
+  margin-left: var(--sidebar-width);
 }
 
 .bawsaq-app.sidebar-collapsed .sidebar {
-  width: 82px;
+  width: var(--sidebar-width);
 }
 
 .bawsaq-app.sidebar-collapsed .main-area {
-  margin-left: 82px;
+  margin-left: var(--sidebar-width);
 }
 
 .bawsaq-app.sidebar-collapsed .logo-area {
@@ -155,7 +157,7 @@ ul {
   position: fixed;
   inset: 0 auto 0 0;
 
-  width: 220px;
+  width: var(--sidebar-width);
   height: 100vh;
 
   display: flex;
@@ -1040,8 +1042,12 @@ ul {
 ========================================= */
 
 @media (max-width: 1200px) {
+  .bawsaq-app {
+    --sidebar-width: 190px;
+  }
+
   .sidebar {
-    width: 190px;
+    width: var(--sidebar-width);
   }
 
   .market-strip {
@@ -1061,10 +1067,13 @@ ul {
 }
 
 @media (max-width: 900px) {
+  .bawsaq-app {
+    --sidebar-width: 64px;
+  }
+
   .sidebar {
     position: fixed;
-
-    width: 64px;
+    width: var(--sidebar-width);
   }
 
   .logo-area {
@@ -1093,7 +1102,7 @@ ul {
   }
 
   .main-area {
-    margin-left: 64px;
+    margin-left: var(--sidebar-width);
   }
 
   .market-strip {
