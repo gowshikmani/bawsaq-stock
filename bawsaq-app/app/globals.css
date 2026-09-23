@@ -110,6 +110,40 @@ ul {
 .main-area {
   flex: 1;
   min-width: 0;
+  margin-left: 220px;
+}
+
+.bawsaq-app.sidebar-collapsed .sidebar {
+  width: 82px;
+}
+
+.bawsaq-app.sidebar-collapsed .main-area {
+  margin-left: 82px;
+}
+
+.bawsaq-app.sidebar-collapsed .logo-area {
+  justify-content: center;
+  padding: 0;
+}
+
+.bawsaq-app.sidebar-collapsed .logo {
+  font-size: 0;
+}
+
+.bawsaq-app.sidebar-collapsed .logo::before {
+  content: "B";
+  font-size: 27px;
+}
+
+.bawsaq-app.sidebar-collapsed .logo-tagline,
+.bawsaq-app.sidebar-collapsed .nav-item .nav-label,
+.bawsaq-app.sidebar-collapsed .nav-section-title {
+  display: none;
+}
+
+.bawsaq-app.sidebar-collapsed .nav-item {
+  justify-content: center;
+  padding: 0;
 }
 
 
