@@ -1,70 +1,43 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 
 const markets = [
-  {
-    name: "NIFTY 50",
-    value: "25,420.65",
-    change: "+0.82%",
-    positive: true,
-  },
-  {
-    name: "SENSEX",
-    value: "83,210.12",
-    change: "+0.61%",
-    positive: true,
-  },
-  {
-    name: "NASDAQ",
-    value: "21,440.32",
-    change: "-0.13%",
-    positive: false,
-  },
-  {
-    name: "S&P 500",
-    value: "6,021.45",
-    change: "-0.21%",
-    positive: false,
-  },
-  {
-    name: "USD / INR",
-    value: "83.26",
-    change: "+0.12%",
-    positive: true,
-  },
+  { name: "NIFTY 50", value: "25,420.65", change: "+0.82%", positive: true },
+  { name: "SENSEX", value: "83,210.12", change: "+0.61%", positive: true },
+  { name: "NASDAQ", value: "21,440.32", change: "-0.13%", positive: false },
+  { name: "S&P 500", value: "6,021.45", change: "-0.21%", positive: false },
+  { name: "USD / INR", value: "83.26", change: "+0.12%", positive: true },
 ];
 
 const movers = [
   {
     symbol: "RELIANCE",
-    name: "Reliance Industries",
     price: "₹1,421.35",
     change: "+2.14%",
     positive: true,
   },
   {
     symbol: "TCS",
-    name: "Tata Consultancy Services",
     price: "₹3,921.20",
     change: "+1.72%",
     positive: true,
   },
   {
     symbol: "HDFCBANK",
-    name: "HDFC Bank",
     price: "₹1,892.60",
     change: "+1.48%",
     positive: true,
   },
   {
     symbol: "INFY",
-    name: "Infosys",
     price: "₹1,612.45",
     change: "+1.32%",
     positive: true,
   },
   {
     symbol: "ICICIBANK",
-    name: "ICICI Bank",
     price: "₹1,248.30",
     change: "+1.21%",
     positive: true,
@@ -72,171 +45,151 @@ const movers = [
 ];
 
 const globalMarkets = [
-  {
-    name: "S&P 500",
-    value: "6,021.45",
-    change: "-0.21%",
-    positive: false,
-    flag: "🇺🇸",
-  },
-  {
-    name: "NASDAQ",
-    value: "21,440.32",
-    change: "-0.13%",
-    positive: false,
-    flag: "🇺🇸",
-  },
-  {
-    name: "DOW JONES",
-    value: "44,711.32",
-    change: "-0.18%",
-    positive: false,
-    flag: "🇺🇸",
-  },
-  {
-    name: "FTSE 100",
-    value: "9,234.67",
-    change: "+0.32%",
-    positive: true,
-    flag: "🇬🇧",
-  },
-  {
-    name: "DAX",
-    value: "23,689.12",
-    change: "+0.41%",
-    positive: true,
-    flag: "🇩🇪",
-  },
-  {
-    name: "NIKKEI 225",
-    value: "45,732.60",
-    change: "+0.68%",
-    positive: true,
-    flag: "🇯🇵",
-  },
+  { name: "S&P 500", value: "6,021.45", change: "-0.21%", positive: false },
+  { name: "NASDAQ", value: "21,440.32", change: "-0.13%", positive: false },
+  { name: "DOW JONES", value: "44,711.32", change: "-0.18%", positive: false },
+  { name: "FTSE 100", value: "9,234.67", change: "+0.32%", positive: true },
+  { name: "DAX", value: "23,689.12", change: "+0.41%", positive: true },
 ];
 
 const heatmap = [
-  { name: "Banking", change: "+1.24%", type: "heat-positive-strong" },
+  { name: "BANKING", change: "+1.24%", type: "heat-positive-strong" },
   { name: "IT", change: "+0.87%", type: "heat-positive" },
-  { name: "Auto", change: "+0.42%", type: "heat-positive" },
-  { name: "Pharma", change: "-0.31%", type: "heat-negative" },
+  { name: "AUTO", change: "+0.42%", type: "heat-positive" },
+  { name: "PHARMA", change: "-0.31%", type: "heat-negative" },
   { name: "FMCG", change: "+0.28%", type: "heat-positive" },
-  { name: "Energy", change: "+0.15%", type: "heat-positive" },
-  { name: "Metals", change: "-0.62%", type: "heat-negative-strong" },
-  { name: "Realty", change: "-0.48%", type: "heat-negative" },
-  { name: "Telecom", change: "+0.27%", type: "heat-positive" },
+  { name: "ENERGY", change: "+0.15%", type: "heat-positive" },
+  { name: "METALS", change: "-0.62%", type: "heat-negative-strong" },
+  { name: "REALTY", change: "-0.48%", type: "heat-negative" },
+  { name: "TELECOM", change: "+0.27%", type: "heat-positive" },
 ];
 
 const news = [
   {
     title: "RBI keeps repo rate unchanged at 6.5%",
-    source: "The Economic Times · 2h ago",
+    source: "Economic Times · 2h ago",
   },
   {
-    title: "TCS announces $1.2B deal with global client for AI transformation",
+    title: "TCS announces major global AI transformation deal",
     source: "Livemint · 4h ago",
   },
   {
-    title: "Sensex gains 600 points as banking stocks rally",
+    title: "Banking stocks lead today's market rally",
     source: "Business Standard · 5h ago",
   },
 ];
 
 export default function Home() {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   return (
-    <div className="bawsaq-app">
-      {/* =========================================
+    <div
+      className={`bawsaq-app ${
+        sidebarCollapsed ? "sidebar-collapsed" : ""
+      }`}
+    >
+      {/* ================================
           SIDEBAR
-      ========================================= */}
+      ================================= */}
 
       <aside className="sidebar">
         <div className="logo-area">
-          <div>
+          <div className="logo-wrapper">
             <div className="logo">
               BAWSAQ
             </div>
 
-            <span className="logo-tagline">
+            <div className="logo-tagline">
               THE MARKET NEVER SLEEPS
-            </span>
+            </div>
           </div>
         </div>
 
         <nav className="sidebar-nav">
+
           <div className="nav-section-title">
-            Main
+            MAIN
           </div>
 
           <Link href="/" className="nav-item active">
             <span className="nav-icon">⌂</span>
-            <span>Dashboard</span>
+            <span className="nav-label">Dashboard</span>
           </Link>
 
           <Link href="/markets" className="nav-item">
             <span className="nav-icon">◫</span>
-            <span>Markets</span>
+            <span className="nav-label">Markets</span>
           </Link>
 
           <Link href="/stocks" className="nav-item">
             <span className="nav-icon">▥</span>
-            <span>Stocks</span>
+            <span className="nav-label">Stocks</span>
           </Link>
 
           <Link href="/screener" className="nav-item">
             <span className="nav-icon">⌕</span>
-            <span>Screener</span>
+            <span className="nav-label">Screener</span>
           </Link>
 
           <Link href="/watchlist" className="nav-item">
             <span className="nav-icon">☆</span>
-            <span>Watchlist</span>
+            <span className="nav-label">Watchlist</span>
           </Link>
 
           <Link href="/portfolio" className="nav-item">
             <span className="nav-icon">▣</span>
-            <span>Portfolio</span>
+            <span className="nav-label">Portfolio</span>
           </Link>
 
           <Link href="/news" className="nav-item">
             <span className="nav-icon">▤</span>
-            <span>News</span>
+            <span className="nav-label">News</span>
           </Link>
 
           <Link href="/alerts" className="nav-item">
             <span className="nav-icon">♢</span>
-            <span>Alerts</span>
+            <span className="nav-label">Alerts</span>
           </Link>
 
           <div className="nav-section-title">
-            Tools
+            TOOLS
           </div>
 
           <Link href="/compare" className="nav-item">
             <span className="nav-icon">⇄</span>
-            <span>Stock Comparison</span>
+            <span className="nav-label">Compare</span>
           </Link>
 
           <Link href="/calculator" className="nav-item">
             <span className="nav-icon">▦</span>
-            <span>Calculator</span>
+            <span className="nav-label">Calculator</span>
           </Link>
 
           <Link href="/calendar" className="nav-item">
             <span className="nav-icon">□</span>
-            <span>Economic Calendar</span>
+            <span className="nav-label">Economic Calendar</span>
           </Link>
 
           <Link href="/settings" className="nav-item">
             <span className="nav-icon">⚙</span>
-            <span>Settings</span>
+            <span className="nav-label">Settings</span>
           </Link>
+
         </nav>
+
+        <div className="sidebar-footer">
+          <div className="market-indicator">
+            <span />
+            <span className="market-indicator-text">
+              MARKET OPEN
+            </span>
+          </div>
+        </div>
       </aside>
 
-      {/* =========================================
-          MAIN AREA
-      ========================================= */}
+      {/* ================================
+          MAIN
+      ================================= */}
 
       <main className="main-area">
 
@@ -244,52 +197,69 @@ export default function Home() {
 
         <header className="topbar">
 
+          <button
+            className="sidebar-toggle"
+            onClick={() =>
+              setSidebarCollapsed((current) => !current)
+            }
+            aria-label={
+              sidebarCollapsed
+                ? "Expand sidebar"
+                : "Collapse sidebar"
+            }
+          >
+            {sidebarCollapsed ? "»" : "«"}
+          </button>
+
           <div className="search-box">
-            <span>⌕</span>
+            <span className="search-icon">
+              ⌕
+            </span>
 
             <input
               type="text"
-              placeholder="Search stocks, indices, or companies..."
+              placeholder="Search stocks, indices, companies..."
             />
+
+            <span className="search-shortcut">
+              /
+            </span>
           </div>
 
-          <div className="market-status">
-            <span className="market-status-dot" />
-            MARKET OPEN
-          </div>
+          <div className="topbar-right">
 
-          <div
-            style={{
-              color: "var(--text-secondary)",
-              fontSize: "11px",
-              whiteSpace: "nowrap",
-            }}
-          >
-            23 SEP 2026&nbsp;&nbsp; 10:42 AM
-          </div>
+            <div className="market-status">
+              <span className="market-status-dot" />
+              MARKET OPEN
+            </div>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              color: "var(--text-primary)",
-              fontSize: "12px",
-            }}
-          >
-            <span>◯</span>
-            Sanjeev
-            <span style={{ color: "var(--text-muted)" }}>⌄</span>
+            <div className="topbar-date">
+              23 SEP 2026
+            </div>
+
+            <div className="user-profile">
+              <div className="user-avatar">
+                S
+              </div>
+
+              <span>
+                User
+              </span>
+            </div>
+
           </div>
         </header>
 
-        {/* DASHBOARD */}
+        {/* ================================
+            DASHBOARD
+        ================================= */}
 
         <section className="dashboard">
 
           {/* MARKET STRIP */}
 
           <div className="market-strip">
+
             {markets.map((market) => (
               <div
                 className="market-card"
@@ -315,69 +285,87 @@ export default function Home() {
                 </div>
               </div>
             ))}
-          </div>
 
-          {/* GRID */}
+          </div>
 
           <div className="dashboard-grid">
 
-            {/* =====================================
-                HERO
-            ===================================== */}
+            {/* HERO */}
 
             <section className="panel hero-panel">
 
               <div className="hero-content">
 
                 <div className="hero-label">
-                  Markets Today
+                  MARKET INTELLIGENCE
                 </div>
 
                 <h1 className="hero-title">
-                  BULLISH SENTIMENT{" "}
-                  <span>RETURNS</span>
+                  THE MARKET{" "}
+                  <span>NEVER SLEEPS.</span>
                 </h1>
 
                 <p className="hero-description">
-                  Indian indices open higher as banking
-                  and IT stocks lead the rally. Global
-                  cues remain mixed.
+                  Track markets, discover opportunities,
+                  analyze companies and understand what's
+                  moving the market.
                 </p>
 
                 <button className="hero-button">
-                  VIEW MARKET ANALYSIS →
+                  EXPLORE MARKETS →
                 </button>
 
               </div>
+
+              <div className="hero-stat">
+
+                <span>
+                  MARKET SENTIMENT
+                </span>
+
+                <strong>
+                  74
+                </strong>
+
+                <small>
+                  / 100
+                </small>
+
+                <div className="sentiment-bar">
+                  <span />
+                </div>
+
+              </div>
+
             </section>
 
-            {/* =====================================
-                TOP MOVERS
-            ===================================== */}
+            {/* TOP MOVERS */}
 
             <section className="panel movers-panel">
 
               <div className="panel-header">
+
                 <h2 className="panel-title">
-                  Top Movers
+                  TOP MOVERS
                 </h2>
 
                 <span className="panel-action">
-                  View All →
+                  VIEW ALL →
                 </span>
+
               </div>
 
               <div className="movers-tabs">
                 <button className="mover-tab active">
-                  Gainers
+                  GAINERS
                 </button>
 
                 <button className="mover-tab">
-                  Losers
+                  LOSERS
                 </button>
 
                 <button className="mover-tab">
-                  Most Active
+                  ACTIVE
                 </button>
               </div>
 
@@ -386,12 +374,13 @@ export default function Home() {
                 <thead>
                   <tr>
                     <th>Symbol</th>
-                    <th>Last Price</th>
+                    <th>Price</th>
                     <th>Change</th>
                   </tr>
                 </thead>
 
                 <tbody>
+
                   {movers.map((stock) => (
                     <tr key={stock.symbol}>
 
@@ -405,305 +394,261 @@ export default function Home() {
                         {stock.price}
                       </td>
 
-                      <td
-                        className={
-                          stock.positive
-                            ? "positive"
-                            : "negative"
-                        }
-                      >
+                      <td className="positive">
                         ▲ {stock.change}
                       </td>
 
                     </tr>
                   ))}
+
                 </tbody>
 
               </table>
             </section>
 
-            {/* =====================================
-                NIFTY CHART
-            ===================================== */}
+            {/* NIFTY CHART */}
 
             <section className="panel chart-panel">
 
               <div className="panel-header">
+
                 <div>
                   <div className="panel-title">
                     NIFTY 50
                   </div>
 
-                  <div
-                    style={{
-                      marginTop: "5px",
-                      fontFamily:
-                        '"JetBrains Mono", monospace',
-                      fontSize: "20px",
-                      fontWeight: 600,
-                    }}
-                  >
+                  <div className="chart-price">
                     25,420.65
 
-                    <span
-                      className="positive"
-                      style={{
-                        marginLeft: "8px",
-                        fontSize: "11px",
-                      }}
-                    >
-                      ▲ +208.75 (+0.82%)
+                    <span className="positive">
+                      +0.82%
                     </span>
                   </div>
                 </div>
+
+                <span className="panel-action">
+                  DETAILS →
+                </span>
+
               </div>
 
-              <div className="movers-tabs">
-                <button className="mover-tab active">
+              <div className="chart-tabs">
+
+                <button className="chart-tab active">
                   1D
                 </button>
 
-                <button className="mover-tab">
+                <button className="chart-tab">
                   1W
                 </button>
 
-                <button className="mover-tab">
+                <button className="chart-tab">
                   1M
                 </button>
 
-                <button className="mover-tab">
+                <button className="chart-tab">
                   3M
                 </button>
 
-                <button className="mover-tab">
+                <button className="chart-tab">
                   1Y
                 </button>
 
-                <button className="mover-tab">
-                  5Y
-                </button>
               </div>
 
               <div className="chart-container">
 
                 <svg
-                  className="chart-svg"
-                  viewBox="0 0 500 230"
+                  viewBox="0 0 600 240"
                   preserveAspectRatio="none"
+                  className="chart-svg"
                 >
-                  {/* Grid */}
 
-                  <line
-                    x1="0"
-                    y1="30"
-                    x2="500"
-                    y2="30"
-                    stroke="#1b2a32"
-                  />
+                  <defs>
+                    <linearGradient
+                      id="chartGradient"
+                      x1="0"
+                      x2="0"
+                      y1="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="0%"
+                        stopColor="#8df23c"
+                        stopOpacity="0.18"
+                      />
 
-                  <line
-                    x1="0"
-                    y1="80"
-                    x2="500"
-                    y2="80"
-                    stroke="#1b2a32"
-                  />
+                      <stop
+                        offset="100%"
+                        stopColor="#8df23c"
+                        stopOpacity="0"
+                      />
+                    </linearGradient>
+                  </defs>
 
-                  <line
-                    x1="0"
-                    y1="130"
-                    x2="500"
-                    y2="130"
-                    stroke="#1b2a32"
-                  />
-
-                  <line
-                    x1="0"
-                    y1="180"
-                    x2="500"
-                    y2="180"
-                    stroke="#1b2a32"
-                  />
-
-                  {/* Area */}
+                  <g className="chart-grid">
+                    <line x1="0" y1="40" x2="600" y2="40" />
+                    <line x1="0" y1="90" x2="600" y2="90" />
+                    <line x1="0" y1="140" x2="600" y2="140" />
+                    <line x1="0" y1="190" x2="600" y2="190" />
+                  </g>
 
                   <path
+                    className="chart-area"
                     d="
-                      M 0 175
-                      L 20 145
-                      L 40 155
-                      L 60 120
-                      L 80 135
-                      L 100 105
-                      L 120 120
-                      L 140 92
-                      L 160 105
-                      L 180 80
-                      L 200 100
-                      L 220 76
-                      L 240 88
-                      L 260 65
-                      L 280 78
-                      L 300 55
-                      L 320 67
-                      L 340 48
-                      L 360 58
-                      L 380 42
-                      L 400 52
-                      L 420 35
-                      L 440 43
-                      L 460 27
-                      L 480 36
-                      L 500 20
-                      L 500 230
-                      L 0 230
+                      M0 185
+                      L25 165
+                      L50 174
+                      L75 142
+                      L100 150
+                      L125 128
+                      L150 139
+                      L175 106
+                      L200 119
+                      L225 91
+                      L250 105
+                      L275 78
+                      L300 90
+                      L325 68
+                      L350 79
+                      L375 58
+                      L400 67
+                      L425 52
+                      L450 60
+                      L475 43
+                      L500 48
+                      L525 34
+                      L550 40
+                      L575 25
+                      L600 18
+                      L600 240
+                      L0 240
                       Z
                     "
-                    fill="rgba(141, 242, 60, 0.08)"
                   />
-
-                  {/* Line */}
 
                   <polyline
+                    className="chart-line"
                     points="
-                      0,175
-                      20,145
-                      40,155
-                      60,120
-                      80,135
-                      100,105
-                      120,120
-                      140,92
-                      160,105
-                      180,80
-                      200,100
-                      220,76
-                      240,88
-                      260,65
-                      280,78
-                      300,55
-                      320,67
-                      340,48
-                      360,58
-                      380,42
-                      400,52
-                      420,35
-                      440,43
-                      460,27
-                      480,36
-                      500,20
+                      0,185
+                      25,165
+                      50,174
+                      75,142
+                      100,150
+                      125,128
+                      150,139
+                      175,106
+                      200,119
+                      225,91
+                      250,105
+                      275,78
+                      300,90
+                      325,68
+                      350,79
+                      375,58
+                      400,67
+                      425,52
+                      450,60
+                      475,43
+                      500,48
+                      525,34
+                      550,40
+                      575,25
+                      600,18
                     "
-                    fill="none"
-                    stroke="#8df23c"
-                    strokeWidth="2"
                   />
+
                 </svg>
 
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns:
-                    "repeat(4, 1fr)",
-                  padding: "0 14px 14px",
-                  gap: "8px",
-                }}
-              >
-                {[
-                  ["OPEN", "25,211.40"],
-                  ["HIGH", "25,486.20"],
-                  ["LOW", "25,178.35"],
-                  ["PREV. CLOSE", "25,211.85"],
-                ].map(([label, value]) => (
-                  <div key={label}>
-                    <div
-                      style={{
-                        color: "var(--text-muted)",
-                        fontSize: "8px",
-                      }}
-                    >
-                      {label}
-                    </div>
+              <div className="chart-stats">
 
-                    <div
-                      style={{
-                        marginTop: "4px",
-                        fontFamily:
-                          '"JetBrains Mono", monospace',
-                        fontSize: "9px",
-                      }}
-                    >
-                      {value}
-                    </div>
-                  </div>
-                ))}
+                <div>
+                  <span>OPEN</span>
+                  <strong>25,211.40</strong>
+                </div>
+
+                <div>
+                  <span>HIGH</span>
+                  <strong>25,486.20</strong>
+                </div>
+
+                <div>
+                  <span>LOW</span>
+                  <strong>25,178.35</strong>
+                </div>
+
+                <div>
+                  <span>VOLUME</span>
+                  <strong>412.8M</strong>
+                </div>
+
               </div>
+
             </section>
 
-            {/* =====================================
-                HEATMAP
-            ===================================== */}
+            {/* HEATMAP */}
 
             <section className="panel heatmap-panel">
 
               <div className="panel-header">
+
                 <h2 className="panel-title">
-                  Market Heatmap
+                  MARKET HEATMAP
                 </h2>
 
                 <span className="panel-action">
-                  View All →
+                  EXPAND →
                 </span>
+
               </div>
 
               <div className="heatmap">
+
                 {heatmap.map((sector) => (
                   <div
                     key={sector.name}
                     className={`heatmap-cell ${sector.type}`}
                   >
-                    <span>{sector.name}</span>
+                    <span>
+                      {sector.name}
+                    </span>
 
                     <strong>
                       {sector.change}
                     </strong>
                   </div>
                 ))}
+
               </div>
+
             </section>
 
-            {/* =====================================
-                GLOBAL MARKETS
-            ===================================== */}
+            {/* GLOBAL MARKETS */}
 
-            <section className="panel movers-panel">
+            <section className="panel global-panel">
 
               <div className="panel-header">
+
                 <h2 className="panel-title">
-                  Global Markets
+                  GLOBAL MARKETS
                 </h2>
 
                 <span className="panel-action">
-                  View All →
+                  VIEW ALL →
                 </span>
+
               </div>
 
               <table className="stock-table">
 
                 <tbody>
+
                   {globalMarkets.map((market) => (
                     <tr key={market.name}>
 
                       <td>
-                        <span
-                          style={{
-                            marginRight: "8px",
-                          }}
-                        >
-                          {market.flag}
-                        </span>
-
                         <span className="stock-symbol">
                           {market.name}
                         </span>
@@ -728,25 +673,27 @@ export default function Home() {
 
                     </tr>
                   ))}
+
                 </tbody>
 
               </table>
+
             </section>
 
-            {/* =====================================
-                FEATURED STOCK
-            ===================================== */}
+            {/* FEATURED STOCK */}
 
             <section className="panel featured-stock">
 
               <div className="panel-header">
+
                 <h2 className="panel-title">
-                  Featured Stock
+                  FEATURED STOCK
                 </h2>
 
                 <span className="panel-action">
                   ↗
                 </span>
+
               </div>
 
               <div className="stock-main">
@@ -759,28 +706,22 @@ export default function Home() {
                     </div>
 
                     <div className="stock-sector">
-                      Energy | Conglomerate
+                      NSE · RELIANCE
                     </div>
                   </div>
 
                   <span className="positive">
-                    ↗
+                    +2.14%
                   </span>
 
                 </div>
 
                 <div className="stock-big-price">
                   ₹1,421.35
+                </div>
 
-                  <span
-                    className="positive"
-                    style={{
-                      marginLeft: "8px",
-                      fontSize: "11px",
-                    }}
-                  >
-                    +29.82 (+2.14%)
-                  </span>
+                <div className="stock-change-large positive">
+                  ▲ +29.82
                 </div>
 
                 <div className="stock-stats">
@@ -790,57 +731,44 @@ export default function Home() {
                     ["P/E", "24.3"],
                     ["EPS", "₹58.5"],
                     ["ROE", "10.8%"],
-                    ["DEBT / EQUITY", "0.42"],
-                    ["DIVIDEND YIELD", "0.35%"],
+                    ["D/E", "0.42"],
+                    ["DIVIDEND", "0.35%"],
                   ].map(([label, value]) => (
                     <div
                       className="stock-stat"
                       key={label}
                     >
-                      <div className="stock-stat-label">
+                      <span className="stock-stat-label">
                         {label}
-                      </div>
+                      </span>
 
-                      <div className="stock-stat-value">
+                      <strong className="stock-stat-value">
                         {value}
-                      </div>
+                      </strong>
                     </div>
                   ))}
 
                 </div>
 
-                <button
-                  className="btn btn-primary"
-                  style={{
-                    width: "100%",
-                    marginTop: "15px",
-                  }}
-                >
-                  VIEW DETAILED ANALYSIS →
+                <button className="btn btn-primary full-width">
+                  VIEW FULL ANALYSIS →
                 </button>
 
               </div>
+
             </section>
 
-            {/* =====================================
-                BAWSAQ ANALYSIS
-            ===================================== */}
+            {/* BAWSAQ ANALYSIS */}
 
             <section className="panel analysis-panel">
 
               <div className="panel-header">
 
                 <h2 className="panel-title">
-                  BAWSAQ Analysis
+                  BAWSAQ ANALYSIS
                 </h2>
 
-                <span
-                  style={{
-                    color: "var(--green)",
-                    fontSize: "9px",
-                    fontWeight: 700,
-                  }}
-                >
+                <span className="ai-badge">
                   AI
                 </span>
 
@@ -855,18 +783,13 @@ export default function Home() {
                   </div>
 
                   <div>
-                    <div
-                      style={{
-                        color: "var(--text-muted)",
-                        fontSize: "9px",
-                      }}
-                    >
-                      OVERALL RATING
-                    </div>
+                    <span className="analysis-label">
+                      ANALYSIS SCORE
+                    </span>
 
-                    <div className="analysis-rating">
-                      Strong Buy
-                    </div>
+                    <strong className="analysis-rating">
+                      Strong
+                    </strong>
                   </div>
 
                 </div>
@@ -886,7 +809,7 @@ export default function Home() {
                     >
                       <span>{label}</span>
 
-                      <span
+                      <strong
                         className={
                           value === "Medium"
                             ? "neutral"
@@ -894,244 +817,171 @@ export default function Home() {
                         }
                       >
                         {value}
-                      </span>
+                      </strong>
                     </div>
                   ))}
 
                 </div>
 
-                <p
-                  style={{
-                    marginTop: "14px",
-                    color: "var(--text-muted)",
-                    fontSize: "10px",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  Reliance shows strong fundamentals
-                  and solid growth prospects. Valuation
-                  remains moderate with positive momentum.
+                <p className="analysis-description">
+                  Fundamental and momentum indicators
+                  currently show positive conditions.
+                  This analysis is informational and not
+                  financial advice.
                 </p>
 
               </div>
+
             </section>
 
-            {/* =====================================
-                NEWS
-            ===================================== */}
+            {/* NEWS */}
 
             <section className="panel news-panel">
 
               <div className="panel-header">
+
                 <h2 className="panel-title">
-                  Recent News
+                  MARKET NEWS
                 </h2>
 
                 <span className="panel-action">
-                  View All →
+                  VIEW ALL →
                 </span>
+
               </div>
 
-              {news.map((item, index) => (
+              {news.map((item) => (
                 <article
                   className="news-item"
-                  key={index}
+                  key={item.title}
                 >
                   <div className="news-thumbnail" />
 
                   <div>
-                    <div className="news-title">
+                    <h3 className="news-title">
                       {item.title}
-                    </div>
+                    </h3>
 
-                    <div className="news-source">
+                    <p className="news-source">
                       {item.source}
-                    </div>
+                    </p>
                   </div>
                 </article>
               ))}
 
             </section>
 
-            {/* =====================================
-                PORTFOLIO
-            ===================================== */}
+            {/* PORTFOLIO */}
 
             <section className="panel portfolio-panel">
 
               <div className="panel-header">
+
                 <h2 className="panel-title">
-                  Portfolio Overview
+                  PORTFOLIO
                 </h2>
 
                 <span className="panel-action">
-                  View All →
+                  VIEW →
                 </span>
+
               </div>
 
-              <div
-                style={{
-                  padding: "18px",
-                }}
-              >
+              <div className="portfolio-content">
 
-                <div
-                  style={{
-                    color: "var(--text-muted)",
-                    fontSize: "9px",
-                  }}
-                >
+                <span className="portfolio-label">
                   TOTAL VALUE
-                </div>
+                </span>
 
-                <div
-                  style={{
-                    marginTop: "5px",
-                    fontFamily:
-                      '"JetBrains Mono", monospace',
-                    fontSize: "23px",
-                    fontWeight: 600,
-                  }}
-                >
+                <strong className="portfolio-value">
                   ₹7,42,680
+                </strong>
+
+                <span className="portfolio-return positive">
+                  ▲ +4.98% TODAY
+                </span>
+
+                <div className="portfolio-bar">
+
+                  <span
+                    className="portfolio-equity"
+                  />
+
+                  <span
+                    className="portfolio-funds"
+                  />
+
+                  <span
+                    className="portfolio-cash"
+                  />
+
                 </div>
 
-                <div
-                  className="positive"
-                  style={{
-                    marginTop: "5px",
-                    fontFamily:
-                      '"JetBrains Mono", monospace',
-                    fontSize: "10px",
-                  }}
-                >
-                  ▲ +4.98% Today
-                </div>
+                <div className="portfolio-legend">
 
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "20px",
-                    marginTop: "20px",
-                  }}
-                >
+                  <span>
+                    <i className="legend-equity" />
+                    Equity 68%
+                  </span>
 
-                  <div
-                    style={{
-                      width: "90px",
-                      height: "90px",
-                      borderRadius: "50%",
-                      background:
-                        "conic-gradient(#8df23c 0 68%, #45a9ff 68% 86%, #a855f7 86% 100%)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "58px",
-                        height: "58px",
-                        borderRadius: "50%",
-                        background:
-                          "var(--bg-panel)",
-                      }}
-                    />
-                  </div>
+                  <span>
+                    <i className="legend-funds" />
+                    Funds 18%
+                  </span>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "8px",
-                      fontSize: "10px",
-                    }}
-                  >
-                    <span>● Equity&nbsp; 68%</span>
-                    <span>● Mutual Funds&nbsp; 18%</span>
-                    <span>● Cash&nbsp; 14%</span>
-                  </div>
+                  <span>
+                    <i className="legend-cash" />
+                    Cash 14%
+                  </span>
 
                 </div>
 
               </div>
+
             </section>
 
-            {/* =====================================
-                QUICK ACCESS
-            ===================================== */}
+            {/* QUICK ACCESS */}
 
             <section className="panel quick-panel">
 
               <div className="panel-header">
+
                 <h2 className="panel-title">
-                  Quick Access
+                  QUICK ACCESS
                 </h2>
-              </div>
-
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns:
-                    "repeat(2, 1fr)",
-                  gap: "8px",
-                  padding: "14px",
-                }}
-              >
-
-                <button className="btn btn-secondary">
-                  ☆ Add to Watchlist
-                </button>
-
-                <button className="btn btn-secondary">
-                  ⇄ Compare Stocks
-                </button>
-
-                <button className="btn btn-secondary">
-                  ♢ Set Alert
-                </button>
-
-                <button className="btn btn-secondary">
-                  ⌕ Open Screener
-                </button>
 
               </div>
 
-              <div
-                style={{
-                  margin: "0 14px 14px",
-                  minHeight: "70px",
-                  display: "flex",
-                  alignItems: "flex-end",
-                  padding: "12px",
-                  background:
-                    "linear-gradient(135deg, #08151b, #0c2029)",
-                  border: "1px solid var(--border)",
-                  borderRadius: "4px",
-                }}
-              >
-                <div>
-                  <div
-                    style={{
-                      fontWeight: 800,
-                      fontSize: "16px",
-                    }}
-                  >
-                    BAWSAQ
-                  </div>
+              <div className="quick-grid">
 
-                  <div
-                    style={{
-                      marginTop: "3px",
-                      color: "var(--text-muted)",
-                      fontSize: "8px",
-                      letterSpacing: "1px",
-                    }}
-                  >
-                    THE MARKET NEVER SLEEPS
-                  </div>
-                </div>
+                <Link
+                  href="/watchlist"
+                  className="btn btn-secondary"
+                >
+                  ☆ WATCHLIST
+                </Link>
+
+                <Link
+                  href="/compare"
+                  className="btn btn-secondary"
+                >
+                  ⇄ COMPARE
+                </Link>
+
+                <Link
+                  href="/alerts"
+                  className="btn btn-secondary"
+                >
+                  ♢ ALERTS
+                </Link>
+
+                <Link
+                  href="/screener"
+                  className="btn btn-secondary"
+                >
+                  ⌕ SCREENER
+                </Link>
+
               </div>
 
             </section>
