@@ -1,26 +1,1110 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-primary: #050b0f;
+  --bg-secondary: #081117;
+  --bg-panel: #0b151c;
+  --bg-panel-hover: #101d25;
+
+  --border: #1b2a32;
+  --border-light: #263840;
+
+  --text-primary: #f2f5f5;
+  --text-secondary: #9aa8ad;
+  --text-muted: #65747a;
+
+  --green: #8df23c;
+  --green-dark: #3c7d1c;
+  --green-glow: rgba(141, 242, 60, 0.12);
+
+  --red: #ff4d4d;
+  --red-dark: #8f2e2e;
+  --red-glow: rgba(255, 77, 77, 0.1);
+
+  --yellow: #f2c94c;
+  --blue: #45a9ff;
+
+  --radius: 5px;
+  --transition: 160ms ease;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #24343c;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #344951;
+}
+
+
+/* =========================================
+   APP LAYOUT
+========================================= */
+
+.bawsaq-app {
+  min-height: 100vh;
+  display: flex;
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(57, 110, 75, 0.08),
+      transparent 35%
+    ),
+    var(--bg-primary);
+}
+
+.main-area {
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+
+  width: 220px;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #071016;
+  border-right: 1px solid var(--border);
+
+  z-index: 100;
+}
+
+.logo-area {
+  height: 82px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 24px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+}
+
+.logo span {
+  color: var(--green);
+}
+
+.logo-tagline {
+  display: block;
+
+  margin-top: -2px;
+
+  color: var(--text-muted);
+
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 1.1px;
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.sidebar-nav {
+  padding: 20px 10px;
+}
+
+.nav-section-title {
+  padding: 14px 12px 8px;
+
+  color: var(--text-muted);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.nav-item {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  height: 42px;
+  padding: 0 13px;
+
+  color: var(--text-secondary);
+
+  border-radius: 4px;
+
+  cursor: pointer;
+
+  transition:
+    background var(--transition),
+    color var(--transition);
+}
+
+.nav-item:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.nav-item.active {
+  color: #fff;
+  background: rgba(141, 242, 60, 0.12);
+}
+
+.nav-item.active::before {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 3px;
+
+  background: var(--green);
+}
+
+.nav-icon {
+  width: 18px;
+
+  color: currentColor;
+
+  font-size: 15px;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.topbar {
+  position: sticky;
+  top: 0;
+
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  padding: 0 28px;
+
+  background: rgba(5, 11, 15, 0.92);
+  border-bottom: 1px solid var(--border);
+
+  backdrop-filter: blur(12px);
+
+  z-index: 50;
+}
+
+.search-box {
+  flex: 1;
+  max-width: 520px;
+
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 0 14px;
+
+  background: #0b151c;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+
+  transition: border var(--transition);
+}
+
+.search-box:focus-within {
+  border-color: #40535c;
+}
+
+.search-box input {
+  width: 100%;
+
+  outline: none;
+  border: 0;
+
+  background: transparent;
+
+  color: var(--text-primary);
+
+  font-size: 13px;
+}
+
+.search-box input::placeholder {
+  color: var(--text-muted);
+}
+
+.market-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-left: auto;
+
+  color: var(--green);
+
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.market-status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--green);
+
+  box-shadow: 0 0 10px rgba(141, 242, 60, 0.7);
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.dashboard {
+  padding: 24px 28px 40px;
+}
+
+.dashboard-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(12, minmax(0, 1fr));
+
+  gap: 14px;
+}
+
+
+/* =========================================
+   PANELS
+========================================= */
+
+.panel {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.018),
+      transparent
+    ),
+    var(--bg-panel);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+
+  overflow: hidden;
+
+  transition:
+    border-color var(--transition),
+    background var(--transition);
+}
+
+.panel:hover {
+  border-color: var(--border-light);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 48px;
+  padding: 0 16px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.panel-action {
+  color: var(--text-muted);
+
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+.panel-action:hover {
+  color: var(--green);
+}
+
+
+/* =========================================
+   MARKET CARDS
+========================================= */
+
+.market-strip {
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  gap: 10px;
+
+  margin-bottom: 14px;
+}
+
+.market-card {
+  position: relative;
+
+  min-height: 96px;
+
+  padding: 14px;
+
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+
+  overflow: hidden;
+}
+
+.market-card:hover {
+  border-color: var(--border-light);
+}
+
+.market-name {
+  color: var(--text-secondary);
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.market-value {
+  margin-top: 8px;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.market-change {
+  margin-top: 6px;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   PROFIT / LOSS
+========================================= */
+
+.positive {
+  color: var(--green);
+}
+
+.negative {
+  color: var(--red);
+}
+
+.neutral {
+  color: var(--text-secondary);
+}
+
+.positive-bg {
+  background: var(--green-glow);
+}
+
+.negative-bg {
+  background: var(--red-glow);
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero-panel {
+  grid-column: span 12;
+
+  min-height: 205px;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 11, 15, 0.96) 0%,
+      rgba(5, 11, 15, 0.78) 45%,
+      rgba(5, 11, 15, 0.35) 100%
+    ),
+    url("/images/market-city.jpg") center / cover;
+
+  border-left: 2px solid var(--green);
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.hero-label {
+  color: var(--text-secondary);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  margin-top: 7px;
+
+  font-size: 31px;
+  line-height: 1;
+
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.hero-title span {
+  color: var(--green);
+}
+
+.hero-description {
+  max-width: 540px;
+
+  margin-top: 12px;
+
+  color: var(--text-secondary);
+
+  line-height: 1.5;
+}
+
+.hero-button {
+  margin-top: 20px;
+
+  height: 36px;
+  padding: 0 15px;
+
+  background: #101b21;
+
+  color: #fff;
+
+  border: 1px solid #34444b;
+  border-radius: 4px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all var(--transition);
+}
+
+.hero-button:hover {
+  background: var(--green);
+  border-color: var(--green);
+  color: #071016;
+}
+
+
+/* =========================================
+   STOCK TABLE
+========================================= */
+
+.stock-table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+.stock-table th {
+  padding: 10px 14px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+  font-weight: 700;
+
+  text-align: left;
+  text-transform: uppercase;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.stock-table td {
+  padding: 12px 14px;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 11px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.025);
+}
+
+.stock-table tr:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.stock-symbol {
+  color: var(--text-primary);
+
+  font-family: "Inter", sans-serif;
+
+  font-weight: 700;
+}
+
+.stock-price {
+  text-align: right;
+}
+
+
+/* =========================================
+   CHART
+========================================= */
+
+.chart-panel {
+  grid-column: span 4;
+}
+
+.chart-container {
+  height: 245px;
+
+  padding: 14px;
+}
+
+.chart-svg {
+  width: 100%;
+  height: 100%;
+}
+
+
+/* =========================================
+   TOP MOVERS
+========================================= */
+
+.movers-panel {
+  grid-column: span 4;
+}
+
+.heatmap-panel {
+  grid-column: span 4;
+}
+
+.movers-tabs {
+  display: flex;
+  gap: 6px;
+
+  padding: 12px 14px;
+}
+
+.mover-tab {
+  padding: 6px 10px;
+
+  background: transparent;
+
+  color: var(--text-muted);
+
+  border: 1px solid transparent;
+  border-radius: 3px;
+
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+.mover-tab:hover {
+  color: var(--text-primary);
+}
+
+.mover-tab.active {
+  background: var(--green-glow);
+  color: var(--green);
+  border-color: rgba(141, 242, 60, 0.3);
+}
+
+
+/* =========================================
+   HEATMAP
+========================================= */
+
+.heatmap {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 4px;
+
+  padding: 14px;
+}
+
+.heatmap-cell {
+  min-height: 65px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 8px;
+
+  border-radius: 3px;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.heatmap-cell strong {
+  margin-top: 4px;
+
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+}
+
+.heat-positive-strong {
+  background: #176f3c;
+}
+
+.heat-positive {
+  background: #124d30;
+}
+
+.heat-neutral {
+  background: #26343a;
+}
+
+.heat-negative {
+  background: #5b2929;
+}
+
+.heat-negative-strong {
+  background: #822d2d;
+}
+
+
+/* =========================================
+   STOCK FEATURE
+========================================= */
+
+.featured-stock {
+  grid-column: span 4;
+}
+
+.stock-main {
+  padding: 18px;
+}
+
+.stock-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.stock-company {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.stock-sector {
+  margin-top: 4px;
+
+  color: var(--text-muted);
+
+  font-size: 10px;
+}
+
+.stock-big-price {
+  margin-top: 14px;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.stock-stats {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  margin-top: 20px;
+
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+
+.stock-stat {
+  padding: 11px;
+
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.stock-stat-label {
+  color: var(--text-muted);
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+}
+
+.stock-stat-value {
+  margin-top: 5px;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   BAWSAQ ANALYSIS
+========================================= */
+
+.analysis-panel {
+  grid-column: span 4;
+}
+
+.analysis-content {
+  padding: 18px;
+}
+
+.analysis-score {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.score-ring {
+  width: 75px;
+  height: 75px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 5px solid var(--green);
+
+  border-radius: 50%;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  box-shadow:
+    0 0 20px rgba(141, 242, 60, 0.08);
+}
+
+.analysis-rating {
+  color: var(--green);
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.analysis-list {
+  margin-top: 20px;
+}
+
+.analysis-row {
+  display: grid;
+
+  grid-template-columns: 1fr auto;
+
+  padding: 9px 0;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+
+  font-size: 11px;
+}
+
+.analysis-row span:first-child {
+  color: var(--text-secondary);
+}
+
+.analysis-row span:last-child {
+  font-weight: 600;
+}
+
+
+/* =========================================
+   BOTTOM GRID
+========================================= */
+
+.news-panel {
+  grid-column: span 4;
+}
+
+.portfolio-panel {
+  grid-column: span 4;
+}
+
+.quick-panel {
+  grid-column: span 4;
+}
+
+.news-item {
+  display: flex;
+  gap: 12px;
+
+  padding: 12px 14px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.news-thumbnail {
+  width: 58px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  background: #18252b;
+
+  border-radius: 3px;
+}
+
+.news-title {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.news-source {
+  margin-top: 5px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.btn {
+  height: 34px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 13px;
+
+  border-radius: 4px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all var(--transition);
+}
+
+.btn-primary {
+  background: var(--green);
+  color: #071016;
+}
+
+.btn-primary:hover {
+  background: #a4ff5f;
+}
+
+.btn-secondary {
+  background: #101b21;
+  color: var(--text-secondary);
+
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1200px) {
+  .sidebar {
+    width: 190px;
+  }
+
+  .market-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .chart-panel,
+  .movers-panel,
+  .heatmap-panel {
+    grid-column: span 6;
+  }
+
+  .featured-stock,
+  .analysis-panel {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed;
+
+    width: 64px;
+  }
+
+  .logo-area {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .logo {
+    font-size: 0;
+  }
+
+  .logo::before {
+    content: "B";
+    font-size: 25px;
+  }
+
+  .logo-tagline,
+  .nav-item span,
+  .nav-section-title {
+    display: none;
+  }
+
+  .nav-item {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .main-area {
+    margin-left: 64px;
+  }
+
+  .market-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chart-panel,
+  .movers-panel,
+  .heatmap-panel,
+  .featured-stock,
+  .analysis-panel,
+  .news-panel,
+  .portfolio-panel,
+  .quick-panel {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 600px) {
+  .topbar {
+    padding: 0 14px;
+  }
+
+  .dashboard {
+    padding: 14px;
+  }
+
+  .market-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-panel {
+    min-height: 250px;
+    padding: 22px;
+  }
+
+  .hero-title {
+    font-size: 25px;
+  }
+
+  .search-box {
+    max-width: none;
+  }
+
+  .market-status {
+    display: none;
+  }
 }
